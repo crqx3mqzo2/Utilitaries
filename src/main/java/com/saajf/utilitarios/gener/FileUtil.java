@@ -1,11 +1,16 @@
 package com.saajf.utilitarios.gener;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -36,6 +41,27 @@ public class FileUtil {
 
 	}
 
+//	public static  inputstream(String pathFile) throws CustomRuntimeException {
+//		java.io.File fichero = null;
+//		FileInputStream ficheroStream = null;
+//		byte contenido[] = null;
+//		fichero = new java.io.File(pathFile);
+//		contenido = new byte[(int) fichero.length()];
+//		try {
+//			ficheroStream = new FileInputStream(fichero);
+//		} catch (FileNotFoundException e) {
+//			throw new CustomRuntimeException("No se pudo encontrar del servidor el archivo ' ", pathFile);
+//		}
+//		try {
+//			ficheroStream.read(contenido);
+//			ficheroStream.close();
+//		} catch (IOException e) {
+//			throw new CustomRuntimeException("No se pudo abrir del servidor el archivo ' ", pathFile);
+//		}
+//		return contenido;
+//
+//	}
+
 	public static void outputstream(String pathFile, byte[] arg) throws CustomRuntimeException {
 		FileOutputStream ficheroStream = null;
 		try {
@@ -47,13 +73,13 @@ public class FileUtil {
 		}
 
 	}
-	
+
 	public static void crearDirectorio(Path filaLocal) throws IOException {
-		if(Files.notExists(filaLocal)){
+		if (Files.notExists(filaLocal)) {
 			Files.createDirectory(filaLocal);
 		}
 	}
-	
+
 	public static File guardarAnexoEnRutaTemporalDelServer(MultipartFile binario, File fila) {
 		try {
 			byte[] arregloByte = binario.getBytes();
@@ -65,7 +91,7 @@ public class FileUtil {
 			return null;
 		}
 	}
-	
+
 	public static File guardarAnexoEnRutaTemporalDelServer(byte[] binario, File fila) {
 		try {
 			byte[] arregloByte = binario;
@@ -120,24 +146,35 @@ public class FileUtil {
 		}
 	}
 
-	// public static void main(String[] args) {
-	// byte[] archivo = null;
-	// try {
-	// archivo = inputstream("C:\\EAI\\claro_2017.06.pdf");
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// String encode = CryptoUtil.encode(archivo);
-	// System.out.println(encode);
-	// archivo = CryptoUtil.decode(encode);
-	// try {
-	// outputstream("C:\\EAI\\claro_2017.06_1.pdf", archivo);
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// }
+	public static void fileReader(String nameFile) throws IOException {
+		FileReader fileReader = new FileReader(nameFile, StandardCharsets.UTF_8);
+		BufferedReader br = new BufferedReader(fileReader);
+		String a = null;
+		while ((a = br.readLine()) != null) {
+			System.out.println(a);
+		}
+		fileReader.close();
+		br.close();
+	}
+
+	//revisar https://www.baeldung.com/java-buffered-reader
+	
+	public static BufferedReader bufferReader(String nameFile) throws IOException {
+		FileReader fileReader = new FileReader(nameFile, StandardCharsets.UTF_8);
+		BufferedReader br = new BufferedReader(fileReader);
+		fileReader.close();
+		return br;
+	}
+
+	public static BufferedReader bufferReader(String nameFile, Charset charset) throws IOException {
+		FileReader fileReader = new FileReader(nameFile, charset);
+		BufferedReader br = new BufferedReader(fileReader);
+		fileReader.close();
+		return br;
+	}
+
+	public static void main(String[] args) throws IOException {
+		fileReader("C:\\EAI\\application.properties");
+	}
 
 }
