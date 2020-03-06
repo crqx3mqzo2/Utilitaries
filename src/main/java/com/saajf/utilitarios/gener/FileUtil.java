@@ -1,5 +1,7 @@
 package com.saajf.utilitarios.gener;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -22,45 +25,41 @@ public class FileUtil {
 
 	public static byte[] inputstream(String pathFile) throws CustomRuntimeException {
 		java.io.File fichero = null;
-		FileInputStream ficheroStream = null;
-		byte contenido[] = null;
+		FileInputStream ficheroInputStream = null;
+		byte[] contentDimension = null;
 		fichero = new java.io.File(pathFile);
-		contenido = new byte[(int) fichero.length()];
+		contentDimension = new byte[(int) fichero.length()];
 		try {
-			ficheroStream = new FileInputStream(fichero);
+			ficheroInputStream = new FileInputStream(fichero);
 		} catch (FileNotFoundException e) {
 			throw new CustomRuntimeException("No se pudo encontrar del servidor el archivo ' ", pathFile);
 		}
 		try {
-			ficheroStream.read(contenido);
-			ficheroStream.close();
+			ficheroInputStream.read(contentDimension);
+			ficheroInputStream.close();
 		} catch (IOException e) {
 			throw new CustomRuntimeException("No se pudo abrir del servidor el archivo ' ", pathFile);
 		}
-		return contenido;
+		return contentDimension;
 
 	}
 
-//	public static  inputstream(String pathFile) throws CustomRuntimeException {
-//		java.io.File fichero = null;
-//		FileInputStream ficheroStream = null;
-//		byte contenido[] = null;
-//		fichero = new java.io.File(pathFile);
-//		contenido = new byte[(int) fichero.length()];
-//		try {
-//			ficheroStream = new FileInputStream(fichero);
-//		} catch (FileNotFoundException e) {
-//			throw new CustomRuntimeException("No se pudo encontrar del servidor el archivo ' ", pathFile);
-//		}
-//		try {
-//			ficheroStream.read(contenido);
-//			ficheroStream.close();
-//		} catch (IOException e) {
-//			throw new CustomRuntimeException("No se pudo abrir del servidor el archivo ' ", pathFile);
-//		}
-//		return contenido;
-//
-//	}
+	public static BufferedInputStream inputstream_(String pathFile) {
+		java.io.File fichero = new java.io.File(pathFile);
+		BufferedInputStream buf = null;
+		try (InputStream is = new FileInputStream(fichero);
+				OutputStream os = new FileOutputStream(fichero + ".copia")) {
+			BufferedInputStream buf1 = new BufferedInputStream(is, (int) fichero.length());
+			buf1.transferTo(os);
+			buf = buf1;
+		} catch (FileNotFoundException e) {
+			throw new CustomRuntimeException("No se pudo encontrar del servidor el archivo ' ", pathFile);
+		} catch (IOException e) {
+			throw new CustomRuntimeException("No se pudo abrir del servidor el archivo ' ", pathFile);
+		}
+		return buf;
+
+	}
 
 	public static void outputstream(String pathFile, byte[] arg) throws CustomRuntimeException {
 		FileOutputStream ficheroStream = null;
@@ -157,8 +156,8 @@ public class FileUtil {
 		br.close();
 	}
 
-	//revisar https://www.baeldung.com/java-buffered-reader
-	
+	// revisar https://www.baeldung.com/java-buffered-reader
+
 	public static BufferedReader bufferReader(String nameFile) throws IOException {
 		FileReader fileReader = new FileReader(nameFile, StandardCharsets.UTF_8);
 		BufferedReader br = new BufferedReader(fileReader);
