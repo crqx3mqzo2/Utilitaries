@@ -21,8 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.saajf.utilitarios.excep.CustomRuntimeException;
 
+/**
+ * The Class FileUtil.
+ */
 public class FileUtil {
 
+	/**
+	 * Inputstream.
+	 *
+	 * @param pathFile the path file
+	 * @return the byte[]
+	 * @throws CustomRuntimeException the custom runtime exception
+	 */
 	public static byte[] inputstream(String pathFile) throws CustomRuntimeException {
 		java.io.File fichero = null;
 		FileInputStream ficheroInputStream = null;
@@ -44,6 +54,12 @@ public class FileUtil {
 
 	}
 
+	/**
+	 * Inputstream.
+	 *
+	 * @param pathFile the path file
+	 * @return the buffered input stream
+	 */
 	public static BufferedInputStream inputstream_(String pathFile) {
 		java.io.File fichero = new java.io.File(pathFile);
 		BufferedInputStream buf = null;
@@ -61,6 +77,13 @@ public class FileUtil {
 
 	}
 
+	/**
+	 * Outputstream.
+	 *
+	 * @param pathFile the path file
+	 * @param arg the arg
+	 * @throws CustomRuntimeException the custom runtime exception
+	 */
 	public static void outputstream(String pathFile, byte[] arg) throws CustomRuntimeException {
 		FileOutputStream ficheroStream = null;
 		try {
@@ -73,12 +96,25 @@ public class FileUtil {
 
 	}
 
+	/**
+	 * Crear directorio.
+	 *
+	 * @param filaLocal the fila local
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void crearDirectorio(Path filaLocal) throws IOException {
 		if (Files.notExists(filaLocal)) {
 			Files.createDirectory(filaLocal);
 		}
 	}
 
+	/**
+	 * Guardar anexo en ruta temporal del server.
+	 *
+	 * @param binario the binario
+	 * @param fila the fila
+	 * @return the file
+	 */
 	public static File guardarAnexoEnRutaTemporalDelServer(MultipartFile binario, File fila) {
 		try {
 			byte[] arregloByte = binario.getBytes();
@@ -91,6 +127,13 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * Guardar anexo en ruta temporal del server.
+	 *
+	 * @param binario the binario
+	 * @param fila the fila
+	 * @return the file
+	 */
 	public static File guardarAnexoEnRutaTemporalDelServer(byte[] binario, File fila) {
 		try {
 			byte[] arregloByte = binario;
@@ -104,8 +147,10 @@ public class FileUtil {
 	}
 
 	/**
+	 * Delete linux.
+	 *
+	 * @param pathFile the path file
 	 * @deprecated use {@link #deleteFile(String)}
-	 * @param pathFile
 	 */
 	public static void deleteLinux(String pathFile) {
 		File f = new File(pathFile);
@@ -118,9 +163,11 @@ public class FileUtil {
 	}
 
 	/**
+	 * Delete win.
+	 *
+	 * @param pathFile the path file
+	 * @return true, if successful
 	 * @deprecated use {@link #deleteFile(String)}
-	 * @param pathFile
-	 * @return
 	 */
 	public static boolean deleteWin(String pathFile) {
 		File f = new File(pathFile);
@@ -132,8 +179,8 @@ public class FileUtil {
 	 * Elimina el archivo corespondiente.<br>
 	 * este metodo identifica el SO en el cual se desea eliminar el archivo. De ese
 	 * modo ejecuta el comando mas adecuado
-	 * 
-	 * @param pathFile
+	 *
+	 * @param pathFile the path file
 	 */
 	public static void deleteFile(String pathFile) {
 		String OS = System.getProperty("os.name").toLowerCase();
@@ -145,6 +192,12 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * File reader.
+	 *
+	 * @param nameFile the name file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void fileReader(String nameFile) throws IOException {
 		FileReader fileReader = new FileReader(nameFile, StandardCharsets.UTF_8);
 		BufferedReader br = new BufferedReader(fileReader);
@@ -158,6 +211,13 @@ public class FileUtil {
 
 	// revisar https://www.baeldung.com/java-buffered-reader
 
+	/**
+	 * Buffer reader.
+	 *
+	 * @param nameFile the name file
+	 * @return the buffered reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static BufferedReader bufferReader(String nameFile) throws IOException {
 		FileReader fileReader = new FileReader(nameFile, StandardCharsets.UTF_8);
 		BufferedReader br = new BufferedReader(fileReader);
@@ -165,6 +225,14 @@ public class FileUtil {
 		return br;
 	}
 
+	/**
+	 * Buffer reader.
+	 *
+	 * @param nameFile the name file
+	 * @param charset the charset
+	 * @return the buffered reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static BufferedReader bufferReader(String nameFile, Charset charset) throws IOException {
 		FileReader fileReader = new FileReader(nameFile, charset);
 		BufferedReader br = new BufferedReader(fileReader);
@@ -172,6 +240,12 @@ public class FileUtil {
 		return br;
 	}
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static void main(String[] args) throws IOException {
 		fileReader("C:\\EAI\\application.properties");
 	}
