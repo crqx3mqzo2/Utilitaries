@@ -236,7 +236,6 @@ public class FileUtil {
 	public static BufferedReader bufferReader(String nameFile, Charset charset) throws IOException {
 		FileReader fileReader = new FileReader(nameFile, charset);
 		BufferedReader br = new BufferedReader(fileReader);
-		fileReader.close();
 		return br;
 	}
 
